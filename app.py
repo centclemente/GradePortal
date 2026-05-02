@@ -6,7 +6,9 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here_change_in_production'
 
-DATABASE = 'students.db'
+import os
+# Use absolute path in the current directory to avoid permission issues
+DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'students.db')
 
 def get_db_connection():
     db = getattr(g, '_database', None)
