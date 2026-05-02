@@ -6,6 +6,7 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here_change_in_production'
 
+DATABASE = 'students.db'
 
 def get_db_connection():
     db = getattr(g, '_database', None)
@@ -526,6 +527,6 @@ def edit_teacher_profile():
 
 # ============ INITIALIZE DATABASE AND RUN APP ============
 
-if __name__ == '__main__':
-    init_db()
+
+    
     app.run(debug=True)
