@@ -6,9 +6,6 @@ from functools import wraps
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here_change_in_production'
 
-import os
-# Use absolute path in the current directory to avoid permission issues
-DATABASE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'students.db')
 
 def get_db_connection():
     db = getattr(g, '_database', None)
@@ -528,25 +525,6 @@ def edit_teacher_profile():
     return render_template('teacher/edit_profile.html', teacher=teacher)
 
 # ============ INITIALIZE DATABASE AND RUN APP ============
-
-if __name__ == '__main__':
-    # Check if database file exists, if not create it
-    if not os.path.exists(DATABASE):
-        print("Database not found. Creating database...")
-        init_db()
-        print("Database created successfully.")
-    else:
-        # Check if users table exists, if not initialize database
-        conn = sqlite3.connect(DATABASE, timeout=30.0)
-        cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
-        users_exists = cursor.fetchone() is not None
-        conn.close()
-        
-        if not users_exists:
-            print("Database exists but tables are missing. Initializing database...")
-            init_db()
-            print("Database initialized successfully.")
 
 if __name__ == '__main__':
     init_db()
