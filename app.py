@@ -527,6 +527,6 @@ def edit_teacher_profile():
 
 # ============ INITIALIZE DATABASE AND RUN APP ============
 
-
-    
+if __name__ == '__main__':
+    init_db()
     app.run(debug=True)
