@@ -528,5 +528,25 @@ def edit_teacher_profile():
 # ============ INITIALIZE DATABASE AND RUN APP ============
 
 if __name__ == '__main__':
+    import os
+    # Check if database file exists, if not create it
+    if not os.path.exists(DATABASE):
+        print("Database not found. Creating database...")
+        init_db()
+        print("Database created successfully.")
+    else:
+        # Check if users table exists, if not initialize database
+        conn = sqlite3.connect(DATABASE, timeout=30.0)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='users'")
+        users_exists = cursor.fetchone() is not None
+        conn.close()
+        
+        if not users_exists:
+            print("Database exists but tables are missing. Initializing database...")
+            init_db()
+            print("Database initialized successfully.")
+
+if __name__ == '__main__':
     init_db()
     app.run(debug=True)
