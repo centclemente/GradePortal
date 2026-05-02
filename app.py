@@ -15,13 +15,11 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_here_change_in_production'
 
 import os
-import sqlite3
 
-# This line finds the directory of the script regardless of whose PC it's on
+# This finds the folder where app.py is currently sitting
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Change 'database.db' to the name of the file you are using
-DATABASE = os.path.join(BASE_DIR, 'database.db')
+# This builds the path to students.db inside that same folder
+DATABASE = os.path.join(BASE_DIR, 'students.db')
 
 def get_db_connection():
     # This now works on ANY computer because it looks in the local folder
