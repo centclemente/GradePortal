@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Grades - Web Grades Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h5 class="m-0">Web Grades Portal</h5>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('student_grades') }}">
+                        <i class="fas fa-star"></i> My Grades
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <nav class="navbar navbar-light bg-light border-bottom">
+                <div class="container-fluid">
+                    <div>
+                        <span class="navbar-brand mb-0 h1">{{ course.name }}</span><br>
+                        <small class="text-muted">{{ course.code }}</small>
+                    </div>
+                    <span class="text-muted">Welcome, {{ session.first_name }}</span>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="container-fluid p-4">
+                <!-- Class Information Card -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header" style="background-color: var(--primary-color); color: white; padding: 8px 12px;">
+                                <h6 class="mb-0" style="font-size: 0.95rem;">Class Information</h6>
+                            </div>
+                            <div class="card-body" style="padding: 10px 12px;">
+                                <div class="row g-3">
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Code</small>
+                                        <strong style="font-size: 0.95rem; background-color: transparent;">{{ course.code }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Subject</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.name }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Section</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.section }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Schedule</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.days if course.days else 'N/A' }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Time Start</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.start_time|to_12hour if course.start_time else 'N/A' }}</strong>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Time End</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.end_time|to_12hour if course.end_time else 'N/A' }}</strong>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <small class="text-muted d-block" style="font-size: 0.8rem;">Instructor</small>
+                                        <strong style="font-size: 0.95rem;">{{ course.first_name }} {{ course.last_name }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grades Table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header" style="background-color: var(--primary-color); color: white;">
+                                <h6 class="mb-0">Your Record</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Prelims</th>
+                                                <th>Midterms</th>
+                                                <th>Finals</th>
+                                                <th>Final Grade</th>
+                                                <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="background-color: transparent;">{{ course.prelims or '-' }}</td>
+                                                <td style="background-color: transparent;">{{ course.midterms or '-' }}</td>
+                                                <td style="background-color: transparent;">{{ course.finals or '-' }}</td>
+                                                <td style="background-color: transparent;"><strong>{{ "%.2f"|format(course.final_grade) if course.final_grade else '-' }}</strong></td>
+                                                <td>
+                                                    {% if course.remarks == 'Passed' %}
+                                                        <span style="color: #28a745; font-weight: bold;"><i class="fas fa-check-circle"></i> Passed</span>
+                                                    {% elif course.remarks == 'Failed' %}
+                                                        <span style="color: #dc3545; font-weight: bold;"><i class="fas fa-times-circle"></i> Failed</span>
+                                                    {% else %}
+                                                        <span class="text-muted">Pending</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <a href="{{ url_for('student_grades') }}" class="btn" style="background-color: var(--primary-color); color: white;">
+                            <i class="fas fa-arrow-left"></i> Back to Classes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
