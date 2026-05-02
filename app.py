@@ -528,7 +528,6 @@ def edit_teacher_profile():
 # ============ INITIALIZE DATABASE AND RUN APP ============
 
 if __name__ == '__main__':
-    import os
     # Check if database file exists, if not create it
     if not os.path.exists(DATABASE):
         print("Database not found. Creating database...")
