@@ -9,7 +9,9 @@ app.secret_key = "GRADES_PORTAL"
 
 # ================= DATABASE CONFIG =================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.makedirs(BASE_DIR, exist_ok=True)    
 DATABASE = os.path.join(BASE_DIR, "students.db")
+
 
 
 # ================= DB CONNECTION =================
