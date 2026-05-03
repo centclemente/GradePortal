@@ -152,7 +152,7 @@ def login():
             session.clear()
             session["user_id"] = user["id"]
             session["role"] = user["role"]
-            session["student_no"] = user["student_no"]
+            session["student_no"] = user["student_no"] if user["role"] == "Student" else None
 
             if user["role"] == "Admin":
                 return redirect(url_for("admin_dashboard"))
@@ -258,5 +258,7 @@ def student_grades():
 
 # ================= RUN APP =================
 if __name__ == "__main__":
-    init_db()
+    with app.app_context():
+        init_db()
+
     app.run(debug=True)
